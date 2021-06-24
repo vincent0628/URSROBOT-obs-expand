@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 """
 Created on Thu Jun 24 15:02:16 2021
 
@@ -24,7 +24,7 @@ def writeShapeFile(output, folder_name='test'):
     w.close()
 
 
-class obstacle:
+class Obstacle:
     def __init__(self, mower_gps, heading_degree, heading_bias, 
                  obstacle_radius=0.5, output_path=''):
         """" input """
@@ -97,11 +97,10 @@ class obstacle:
         plt.tight_layout()
         plt.savefig('output.png')
 
-
-if __name__ == "__main__":
-    
+def run_without_ros():
     PLOT = True
     PLOT = False
+
     """ Required """
     mower_gps = [25.6215,121.5595]
     heading_degree = 90 # degrees
@@ -111,8 +110,32 @@ if __name__ == "__main__":
     obstacle_radius = 0.5 # meter 半徑
     output_path = 'output/a'
     
-    sprinkler = obstacle(mower_gps, heading_degree, heading_bias, 
+    sprinkler = Obstacle(mower_gps, heading_degree, heading_bias, 
                          obstacle_radius=0.5, output_path=output_path)
     sprinkler.obs_expand()
     sprinkler.output()
     if PLOT: sprinkler.plot()
+
+def callback(msg):
+    """ write waypoint to txt"""
+    sprinkler = Obstacle(msg.mower_gps, msg.heading_degree, msg.heading_bias, 
+                         obstacle_radius=msg.obstacle_radius, output_path=msg.output_path)
+    sprinkler.obs_expand()
+    sprinkler.output()
+    
+    status = 1
+    response = ObsExpandOutput()
+    response.status=status
+    response.message= 'finish'
+    rospy.loginfo(response)
+    pub = rospy.Publisher('/obs_expand/output', ObsExpandOutput , latch=True, queue_size=1)
+    pub.publish(response)
+
+
+if __name__ == "__main__":
+    import roslib
+    import rospy
+    from obs_expand.msg import ObsExpandInput,ObsExpandOutput
+    rospy.init_node('obs_expand', anonymous=True)
+    sub = rospy.Subscriber('/obs_expand/input', ObsExpandInput, callback)
+    rospy.spin()

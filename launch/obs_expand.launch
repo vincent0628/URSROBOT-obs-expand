@@ -1,6 +1,6 @@
 <launch>
-    <node pkg="path_planning" name="fake" type="fake.py" output="screen">
+    <node pkg="obs_expand" name="fake" type="fake.py" output="screen">
     </node>
-    <node pkg="path_planning" name="path_planning" type="run_TPP.py" output="screen">
+    <node pkg="obs_expand" name="obs_expand" type="obs_expand.py" output="screen">
     </node>
 </launch>

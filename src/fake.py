@@ -2,21 +2,27 @@
 
 import rospy
 import numpy as np
-import os
-from library.get_path import get_path
-from path_planning.msg import PathPlanningInput
-# %%%%%%%%%%%%
-dir_path = os.path.dirname(os.path.realpath(__file__))+'/'
-# %%%%%%%%%%%%
+from obs_expand.msg import ObsExpandInput
+
 rospy.init_node('fake')
-pub = rospy.Publisher('/path_planning/input', PathPlanningInput, latch=True, queue_size=1)
-msg = PathPlanningInput()
-# 16 503 504
-path = get_path(123)
-msg.pos_path = dir_path + path['BD_path']
-msg.retry_path = dir_path + path['retry_path']
-msg.output_path = dir_path + path['output_path']
-msg.neg_path = [ dir_path+item for item in path['obs_path_list']]
-msg.start_gps = path['start_gps']
+pub = rospy.Publisher('/obs_expand/input', ObsExpandInput, latch=True, queue_size=1)
+msg = ObsExpandInput()
+
+""" Required """
+mower_gps = [25.6215,121.5595]
+heading_degree = 90 # degrees
+heading_bias = 1 # meter
+
+""" Optional """
+obstacle_radius = 0.5 # meter 半徑
+output_path = 'output/a'
+
+
+msg.mower_gps = mower_gps
+msg.heading_degree = heading_degree
+msg.heading_bias = heading_bias
+msg.obstacle_radius = obstacle_radius
+msg.output_path = output_path
+
 rospy.sleep(0.5)
 pub.publish(msg)
