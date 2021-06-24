@@ -1,6 +1,6 @@
 <launch>
     <node pkg="obs_expand" name="fake" type="fake.py" output="screen">
     </node>
-    <node pkg="obs_expand" name="obs_expand" type="obs_expand.py" output="screen">
+    <node pkg="obs_expand" name="obs_expand" type="run_obs_expand.py" output="screen">
     </node>
 </launch>

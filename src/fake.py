@@ -15,7 +15,7 @@ heading_bias = 1 # meter
 
 """ Optional """
 obstacle_radius = 0.5 # meter 半徑
-output_path = 'output/a'
+output_path = '/home/vincent/hihihihih/a'
 
 
 msg.mower_gps = mower_gps
