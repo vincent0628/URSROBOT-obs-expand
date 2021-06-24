@@ -100,6 +100,8 @@ class obstacle:
 
 if __name__ == "__main__":
     
+    PLOT = True
+    PLOT = False
     """ Required """
     mower_gps = [25.6215,121.5595]
     heading_degree = 90 # degrees
@@ -112,5 +114,5 @@ if __name__ == "__main__":
     sprinkler = obstacle(mower_gps, heading_degree, heading_bias, 
                          obstacle_radius=0.5, output_path=output_path)
     sprinkler.obs_expand()
-    sprinkler.plot()
     sprinkler.output()
+    if PLOT: sprinkler.plot()
