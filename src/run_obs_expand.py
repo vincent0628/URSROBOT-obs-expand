@@ -99,7 +99,7 @@ class Obstacle:
 
 def run_without_ros():
     PLOT = True
-    PLOT = False
+    # PLOT = False
 
     """ Required """
     mower_gps = [25.6215,121.5595]
